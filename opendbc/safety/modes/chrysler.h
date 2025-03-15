@@ -11,6 +11,7 @@ typedef struct {
   const int DAS_6;
   const int LKAS_COMMAND;
   const int CRUISE_BUTTONS;
+  const int CRUISE_BUTTONS_ALT;
   const int LKAS_HEARTBIT;
   const int Center_Stack_2;
   const int TRACTION_BUTTON;
@@ -239,6 +240,9 @@ static safety_config chrysler_init(uint16_t param) {
   };
 
 #ifdef ALLOW_DEBUG
+  const uint32_t CHRYSLER_PARAM_RAM_HD_ALT_BUTTONS = 4U;
+  const bool chrysler_ram_hd_alt_buttons = GET_FLAG(param, CHRYSLER_PARAM_RAM_HD_ALT_BUTTONS);
+
   // CAN messages for the 5th gen RAM HD platform
   static const ChryslerAddrs CHRYSLER_RAM_HD_ADDRS = {
     .EPS_2            = 0x220,  // EPS driver input torque
@@ -249,6 +253,7 @@ static safety_config chrysler_init(uint16_t param) {
     .DAS_6            = 0x275,  // LKAS HUD and auto headlight control from DASM
     .LKAS_COMMAND     = 0x276,  // LKAS controls from DASM
     .CRUISE_BUTTONS   = 0x23A,  // Cruise control buttons
+    .CRUISE_BUTTONS_ALT = 0xB1,   // Cruise control buttons for Ram HD
     .Center_Stack_2   = 0x28A,  // Center stack buttons2
   };
 
@@ -261,11 +266,13 @@ static safety_config chrysler_init(uint16_t param) {
     {.msg = {{CHRYSLER_RAM_HD_ADDRS.Center_Stack_2, 0, 8, .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true, .frequency = 1U}, { 0 }, { 0 }}},
   };
 
-  static const CanMsg CHRYSLER_RAM_HD_TX_MSGS[] = {
-    {CHRYSLER_RAM_HD_ADDRS.CRUISE_BUTTONS, 2, 3, .check_relay = false},
-    {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true},
-    {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, .check_relay = true},
-  };
+#define CHRYSLER_RAM_HD_COMMON_TX_MSGS                                 \
+  {CHRYSLER_RAM_HD_ADDRS.CRUISE_BUTTONS, 2, 3, .check_relay = false},  \
+  {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true},     \
+  {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, .check_relay = true},            \
+
+#define CHRYSLER_RAM_HD_ALT_BUTTONS_TX_MSGS                                \
+  {CHRYSLER_RAM_HD_ADDRS.CRUISE_BUTTONS_ALT, 2, 3, .check_relay = false},  \
 
   const uint32_t CHRYSLER_PARAM_RAM_HD = 2U;  // set for Ram HD platform
   bool enable_ram_hd = GET_FLAG(param, CHRYSLER_PARAM_RAM_HD);
@@ -281,9 +288,23 @@ static safety_config chrysler_init(uint16_t param) {
     ret = BUILD_SAFETY_CFG(chrysler_ram_dt_rx_checks, CHRYSLER_RAM_DT_TX_MSGS);
 #ifdef ALLOW_DEBUG
   } else if (enable_ram_hd) {
+    static const CanMsg CHRYSLER_RAM_HD_TX_MSGS[] = {
+      CHRYSLER_RAM_HD_COMMON_TX_MSGS
+    };
+
+    static const CanMsg chrysler_ram_hd_alt_buttons_tx_msgs[] = {
+      CHRYSLER_RAM_HD_COMMON_TX_MSGS
+      CHRYSLER_RAM_HD_ALT_BUTTONS_TX_MSGS
+    };
+
     chrysler_platform = CHRYSLER_RAM_HD;
     chrysler_addrs = &CHRYSLER_RAM_HD_ADDRS;
-    ret = BUILD_SAFETY_CFG(chrysler_ram_hd_rx_checks, CHRYSLER_RAM_HD_TX_MSGS);
+    SET_RX_CHECKS(chrysler_ram_hd_rx_checks, ret);
+    if (chrysler_ram_hd_alt_buttons) {
+      SET_TX_MSGS(chrysler_ram_hd_alt_buttons_tx_msgs, ret);
+    } else {
+      SET_TX_MSGS(CHRYSLER_RAM_HD_TX_MSGS, ret);
+    }
 #endif
   } else {
     chrysler_platform = CHRYSLER_PACIFICA;
