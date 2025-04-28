@@ -9,9 +9,15 @@ from opendbc.safety.tests.common import CANPackerPanda
 
 
 class TestChryslerSafety(common.PandaCarSafetyTest, common.MotorTorqueSteeringSafetyTest):
+<<<<<<< HEAD
   TX_MSGS = [[0x23B, 0], [0x292, 0], [0x2A6, 0], [0x2D9, 0]]
   RELAY_MALFUNCTION_ADDRS = {0: (0x292,)}
   FWD_BLACKLISTED_ADDRS = {2: [0x292, 0x2A6, 0x2D9]}
+=======
+  TX_MSGS = [[0x23B, 0], [0x292, 0], [0x2A6, 0]]
+  RELAY_MALFUNCTION_ADDRS = {0: (0x292, 0x2A6)}
+  FWD_BLACKLISTED_ADDRS = {2: [0x292, 0x2A6]}
+>>>>>>> 130aa5d1b952e6671ce1ef8d949b4e83761b7581
 
   MAX_RATE_UP = 3
   MAX_RATE_DOWN = 3
@@ -78,7 +84,7 @@ class TestChryslerSafety(common.PandaCarSafetyTest, common.MotorTorqueSteeringSa
 
 class TestChryslerRamDTSafety(TestChryslerSafety):
   TX_MSGS = [[0xB1, 2], [0xA6, 0], [0xFA, 0]]
-  RELAY_MALFUNCTION_ADDRS = {0: (0xA6,)}
+  RELAY_MALFUNCTION_ADDRS = {0: (0xA6, 0xFA)}
   FWD_BLACKLISTED_ADDRS = {2: [0xA6, 0xFA]}
 
   MAX_RATE_UP = 6
@@ -106,7 +112,7 @@ class TestChryslerRamDTSafety(TestChryslerSafety):
 
 class TestChryslerRamHDSafety(TestChryslerSafety):
   TX_MSGS = [[0x275, 0], [0x276, 0], [0x23A, 2]]
-  RELAY_MALFUNCTION_ADDRS = {0: (0x276,)}
+  RELAY_MALFUNCTION_ADDRS = {0: (0x276, 0x275)}
   FWD_BLACKLISTED_ADDRS = {2: [0x275, 0x276]}
 
   MAX_TORQUE_LOOKUP = [0], [361]

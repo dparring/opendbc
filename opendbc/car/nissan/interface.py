@@ -11,7 +11,7 @@ class CarInterface(CarInterfaceBase):
   CarController = CarController
 
   @staticmethod
-  def _get_params(ret: structs.CarParams, candidate, fingerprint, car_fw, experimental_long, docs) -> structs.CarParams:
+  def _get_params(ret: structs.CarParams, candidate, fingerprint, car_fw, alpha_long, docs) -> structs.CarParams:
     ret.brand = "nissan"
     ret.safetyConfigs = [get_safety_config(structs.CarParams.SafetyModel.nissan)]
     ret.autoResumeSng = False

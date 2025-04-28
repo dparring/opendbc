@@ -175,6 +175,7 @@ static bool chrysler_tx_hook(const CANPacket_t *to_send) {
   return tx;
 }
 
+<<<<<<< HEAD
 static bool chrysler_fwd_hook(int bus_num, int addr) {
   bool block_msg = false;
 
@@ -188,6 +189,8 @@ static bool chrysler_fwd_hook(int bus_num, int addr) {
   return block_msg;
 }
 
+=======
+>>>>>>> 130aa5d1b952e6671ce1ef8d949b4e83761b7581
 static safety_config chrysler_init(uint16_t param) {
 
   const uint32_t CHRYSLER_PARAM_RAM_DT = 1U;  // set for Ram DT platform
@@ -239,16 +242,22 @@ static safety_config chrysler_init(uint16_t param) {
   };
 
   static const CanMsg CHRYSLER_TX_MSGS[] = {
+<<<<<<< HEAD
     {CHRYSLER_ADDRS.CRUISE_BUTTONS, 0, 3, false},
     {CHRYSLER_ADDRS.LKAS_COMMAND, 0, 6, true},
     {CHRYSLER_ADDRS.DAS_6, 0, 8, false},
     {CHRYSLER_ADDRS.LKAS_HEARTBIT, 0, 5, false},
+=======
+    {CHRYSLER_ADDRS.CRUISE_BUTTONS, 0, 3, .check_relay = false},
+    {CHRYSLER_ADDRS.LKAS_COMMAND, 0, 6, .check_relay = true},
+    {CHRYSLER_ADDRS.DAS_6, 0, 8, .check_relay = true},
+>>>>>>> 130aa5d1b952e6671ce1ef8d949b4e83761b7581
   };
 
   static const CanMsg CHRYSLER_RAM_DT_TX_MSGS[] = {
-    {CHRYSLER_RAM_DT_ADDRS.CRUISE_BUTTONS, 2, 3, false},
-    {CHRYSLER_RAM_DT_ADDRS.LKAS_COMMAND, 0, 8, true},
-    {CHRYSLER_RAM_DT_ADDRS.DAS_6, 0, 8, false},
+    {CHRYSLER_RAM_DT_ADDRS.CRUISE_BUTTONS, 2, 3, .check_relay = false},
+    {CHRYSLER_RAM_DT_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true},
+    {CHRYSLER_RAM_DT_ADDRS.DAS_6, 0, 8, .check_relay = true},
   };
 
 #ifdef ALLOW_DEBUG
@@ -275,9 +284,9 @@ static safety_config chrysler_init(uint16_t param) {
   };
 
   static const CanMsg CHRYSLER_RAM_HD_TX_MSGS[] = {
-    {CHRYSLER_RAM_HD_ADDRS.CRUISE_BUTTONS, 2, 3, false},
-    {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, true},
-    {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, false},
+    {CHRYSLER_RAM_HD_ADDRS.CRUISE_BUTTONS, 2, 3, .check_relay = false},
+    {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true},
+    {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, .check_relay = true},
   };
 
   const uint32_t CHRYSLER_PARAM_RAM_HD = 2U;  // set for Ram HD platform
@@ -310,7 +319,6 @@ const safety_hooks chrysler_hooks = {
   .init = chrysler_init,
   .rx = chrysler_rx_hook,
   .tx = chrysler_tx_hook,
-  .fwd = chrysler_fwd_hook,
   .get_counter = chrysler_get_counter,
   .get_checksum = chrysler_get_checksum,
   .compute_checksum = chrysler_compute_checksum,
