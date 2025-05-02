@@ -28,8 +28,8 @@ class CarState(CarStateBase, MadsCarState):
 
     self.distance_button = 0
 
-    self.cruise_btns_ram_hd = "CRUISE_BUTTONS_ALT" if CP.flags & ChryslerFlags.RAM_HD_ALT_BUTTONS else \
-                              "CRUISE_BUTTONS"
+    self.cruise_btns = "CRUISE_BUTTONS_ALT" if CP.flags & ChryslerFlags.RAM_HD_ALT_BUTTONS else \
+                       "CRUISE_BUTTONS"
 
   def update(self, can_parsers) -> tuple[structs.CarState, structs.CarStateSP]:
     cp = can_parsers[Bus.pt]
@@ -39,7 +39,7 @@ class CarState(CarStateBase, MadsCarState):
     ret_sp = structs.CarStateSP()
 
     prev_distance_button = self.distance_button
-    self.distance_button = cp.vl[self.cruise_btns_ram_hd]["ACC_Distance_Dec"]
+    self.distance_button = cp.vl[self.cruise_btns]["ACC_Distance_Dec"]
 
     # lock info
     ret.doorOpen = any([cp.vl["BCM_1"]["DOOR_OPEN_FL"],
@@ -109,7 +109,7 @@ class CarState(CarStateBase, MadsCarState):
       ret.rightBlindspot = cp.vl["BSM_1"]["RIGHT_STATUS"] == 1
 
     self.lkas_car_model = cp_cam.vl["DAS_6"]["CAR_MODEL"]
-    self.button_counter = cp.vl[self.cruise_btns_ram_hd]["COUNTER"]
+    self.button_counter = cp.vl[self.cruise_btns]["COUNTER"]
 
     MadsCarState.update_mads(self, ret, can_parsers)
 
@@ -137,7 +137,7 @@ class CarState(CarStateBase, MadsCarState):
       ("ESP_6", 50),
       ("STEERING", 100),
       ("ECM_5", 50),
-      (self.cruise_btns_ram_hd, 50),
+      (self.cruise_btns, 50),
       ("STEERING_LEVERS", 10),
       ("ORC_1", 2),
       ("BCM_1", 1),
