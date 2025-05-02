@@ -263,14 +263,14 @@ static safety_config chrysler_init(uint16_t param) {
     {.msg = {{CHRYSLER_RAM_HD_ADDRS.Center_Stack_2, 0, 8, .ignore_checksum = true, .ignore_counter = true, .ignore_quality_flag = true, .frequency = 1U}, { 0 }, { 0 }}},
   };
 
-#define CHRYSLER_RAM_HD_COMMON_TX_MSGS                                 \
-  {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true},     \
-  {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, .check_relay = true},            \
+#define CHRYSLER_RAM_HD_COMMON_TX_MSGS                             \
+  {CHRYSLER_RAM_HD_ADDRS.LKAS_COMMAND, 0, 8, .check_relay = true}, \
+  {CHRYSLER_RAM_HD_ADDRS.DAS_6, 0, 8, .check_relay = true},        \
 
   const uint32_t CHRYSLER_PARAM_RAM_HD = 2U;  // set for Ram HD platform
   const uint32_t CHRYSLER_PARAM_RAM_HD_ALT_BUTTONS = 4U;
   bool enable_ram_hd = GET_FLAG(param, CHRYSLER_PARAM_RAM_HD);
-  bool chrysler_ram_hd_alt_buttons = GET_FLAG(param, CHRYSLER_PARAM_RAM_HD_ALT_BUTTONS);
+  bool ram_hd_alt_buttons = GET_FLAG(param, CHRYSLER_PARAM_RAM_HD_ALT_BUTTONS);
 #endif
 
   safety_config ret;
@@ -296,7 +296,7 @@ static safety_config chrysler_init(uint16_t param) {
     chrysler_platform = CHRYSLER_RAM_HD;
     chrysler_addrs = &CHRYSLER_RAM_HD_ADDRS;
     SET_RX_CHECKS(chrysler_ram_hd_rx_checks, ret);
-    if (chrysler_ram_hd_alt_buttons) {
+    if (ram_hd_alt_buttons) {
       SET_TX_MSGS(CHRYSLER_RAM_HD_ALT_BUTTONS_TX_MSGS, ret);
     } else {
       SET_TX_MSGS(CHRYSLER_RAM_HD_TX_MSGS, ret);
