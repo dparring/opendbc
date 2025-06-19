@@ -28,6 +28,9 @@ class CarState(CarStateBase, MadsCarState):
 
     self.distance_button = 0
 
+    self.cruise_btns = "CRUISE_BUTTONS_ALT" if CP.flags & ChryslerFlags.RAM_HD_ALT_BUTTONS else \
+                              "CRUISE_BUTTONS"
+
   def update(self, can_parsers) -> tuple[structs.CarState, structs.CarStateSP]:
     cp = can_parsers[Bus.pt]
     cp_cam = can_parsers[Bus.cam]
