@@ -66,11 +66,6 @@ class CarInterface(CarInterfaceBase):
       ret.steerActuatorDelay = 0.25
       CarInterfaceBase.configure_torque_tune(candidate, ret.lateralTuning)
 
-      # Some RAM HD use Chrysler button address (0x23B CRUISE_BUTTONS_ALT)
-      if 0x23A not in fingerprint[0]:
-        ret.flags |= ChryslerFlags.RAM_HD_ALT_BUTTONS.value
-        ret.safetyConfigs[0].safetyParam |= ChryslerSafetyFlags.RAM_HD_ALT_BUTTONS.value
-
     else:
       raise ValueError(f"Unsupported car: {candidate}")
 
