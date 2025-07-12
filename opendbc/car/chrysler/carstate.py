@@ -131,7 +131,6 @@ class CarState(CarStateBase, MadsCarState):
     ]
     return messages
 
-  @staticmethod
   def get_can_parsers(self, CP, CP_SP):
     pt_messages = [
       # sig_address, frequency
