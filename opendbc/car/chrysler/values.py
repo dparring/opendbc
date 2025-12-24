@@ -89,7 +89,7 @@ class CAR(Platforms):
       ChryslerCarDocs("Ram 3500 2019-22", car_parts=CarParts.common([CarHarness.ram])),
     ],
     ChryslerCarSpecs(mass=3405., wheelbase=3.785, steerRatio=15.61, minSteerSpeed=16.),
-    {Bus.pt: 'chrysler_ram_hd_generated'},
+    {Bus.pt: 'chrysler_ram_hd_2024_generated'},
   )
 
 
