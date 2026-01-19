@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-from opendbc.car import get_safety_config, structs
+from opendbc.car import get_safety_config, structs, Bus
 from opendbc.car.chrysler.carcontroller import CarController
 from opendbc.car.chrysler.carstate import CarState
 from opendbc.car.chrysler.radar_interface import RadarInterface
 from opendbc.car.chrysler.values import CAR, RAM_HD, RAM_DT, RAM_CARS, ChryslerFlags, ChryslerSafetyFlags
 from opendbc.car.interfaces import CarInterfaceBase
 from opendbc.sunnypilot.car.chrysler.values_ext import ChryslerFlagsSP
-
+import selfdrive.locationd.paramsd as paramsd
 
 class CarInterface(CarInterfaceBase):
   CarState = CarState
@@ -65,6 +65,8 @@ class CarInterface(CarInterfaceBase):
 
     elif candidate == CAR.RAM_HD_5TH_GEN:
       ret.steerActuatorDelay = 0.2
+      if 0x23A not in fingerprint[0]:
+        ret.dbc[Bus.pt] = 'chrysler_ram_hd_2024_generated'
 
     else:
       raise ValueError(f"Unsupported car: {candidate}")
@@ -97,6 +99,8 @@ class CarInterface(CarInterfaceBase):
       stock_cp.tireStiffnessRear = 80926.
       stock_cp.wheelbase = 3.79
       stock_cp.steerRatio = 19.
+      paramsd.OFFSET_MAX = 12.
+      paramsd.OFFSET_LOWERED_MAX = 10.
 
     if 0x4FF in fingerprint[0]:
       ret.flags |= ChryslerFlagsSP.NO_MIN_STEERING_SPEED.value
