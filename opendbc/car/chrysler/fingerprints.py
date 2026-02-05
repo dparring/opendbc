@@ -790,3 +790,14 @@ FW_VERSIONS = {
 }
 
 FW_VERSIONS = merge_fw_versions(FW_VERSIONS, FW_VERSIONS_EXT)
+
+# 2024 HD has buttons mapped to a different CAN address but same otherwise
+FW_VERSIONS[CAR.RAM_HD_5TH_GEN_2024] = FW_VERSIONS[CAR.RAM_HD_5TH_GEN]
+FINGERPRINTS = {
+  CAR.RAM_HD_5TH_GEN: [
+    {0x23A: 3},
+  ],
+  CAR.RAM_HD_5TH_GEN_2024: [
+    {0x23B: 3},
+  ],
+}

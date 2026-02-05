@@ -63,7 +63,7 @@ class CarInterface(CarInterfaceBase):
       if any(fw.ecu == 'eps' and b"68" < fw.fwVersion[:4] <= b"6831" for fw in car_fw):
         ret.minSteerSpeed = 0.
 
-    elif candidate == CAR.RAM_HD_5TH_GEN:
+    elif candidate in RAM_HD:
       ret.steerActuatorDelay = 0.2
 
     else:
@@ -89,7 +89,7 @@ class CarInterface(CarInterfaceBase):
       if any(fw.ecu == 'eps' and fw.fwVersion in (b"68273275AF", b"68273275AG", b"68312176AE", b"68312176AG",) for fw in car_fw):
         stock_cp.minEnableSpeed = 0.
 
-    if candidate == CAR.RAM_HD_5TH_GEN:
+    if candidate in RAM_HD:
       stock_cp.dashcamOnly = False
       # https://github.com/commaai/openpilot/issues/25389
       stock_cp.tireStiffnessFactor = 1.0
@@ -97,6 +97,8 @@ class CarInterface(CarInterfaceBase):
       stock_cp.tireStiffnessRear = 80926.
       stock_cp.wheelbase = 3.79
       stock_cp.steerRatio = 19.
+      paramsd.OFFSET_MAX = 14.
+      paramsd.OFFSET_LOWERED_MAX = 12.
 
     if 0x4FF in fingerprint[0]:
       ret.flags |= ChryslerFlagsSP.NO_MIN_STEERING_SPEED.value

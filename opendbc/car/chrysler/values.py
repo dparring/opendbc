@@ -85,10 +85,18 @@ class CAR(Platforms):
   )
   RAM_HD_5TH_GEN = ChryslerPlatformConfig(
     [
-      ChryslerCarDocs("Ram 2500 2020-24", car_parts=CarParts.common([CarHarness.ram])),
-      ChryslerCarDocs("Ram 3500 2019-24", car_parts=CarParts.common([CarHarness.ram])),
+      ChryslerCarDocs("Ram 2500 2020-23", car_parts=CarParts.common([CarHarness.ram])),
+      ChryslerCarDocs("Ram 3500 2019-23", car_parts=CarParts.common([CarHarness.ram])),
     ],
-    ChryslerCarSpecs(mass=3405., wheelbase=3.785, steerRatio=15.61, minSteerSpeed=16.),
+    ChryslerCarSpecs(mass=3405., wheelbase=3.79, steerRatio=19, minSteerSpeed=16.),
+    {Bus.pt: 'chrysler_ram_hd_generated'},
+  )
+  RAM_HD_5TH_GEN_2024 = ChryslerPlatformConfig(
+    [
+      ChryslerCarDocs("Ram 2500 2024", car_parts=CarParts.common([CarHarness.ram])),
+      ChryslerCarDocs("Ram 3500 2024", car_parts=CarParts.common([CarHarness.ram])),
+    ],
+    ChryslerCarSpecs(mass=3405., wheelbase=3.79, steerRatio=19, minSteerSpeed=16.),
     {Bus.pt: 'chrysler_ram_hd_2024_generated'},
   )
 
@@ -114,7 +122,7 @@ class CarControllerParams:
 STEER_THRESHOLD = 120
 
 RAM_DT = {CAR.RAM_1500_5TH_GEN, }
-RAM_HD = {CAR.RAM_HD_5TH_GEN, }
+RAM_HD = {CAR.RAM_HD_5TH_GEN, CAR.RAM_HD_5TH_GEN_2024, }
 RAM_CARS = RAM_DT | RAM_HD
 
 
