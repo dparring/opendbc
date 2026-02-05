@@ -18,6 +18,7 @@ class ChryslerFlags(IntFlag):
   # Detected flags
   HIGHER_MIN_STEERING_SPEED = 1
 
+
 @dataclass
 class ChryslerCarDocs(CarDocs):
   package: str = "Adaptive Cruise Control (ACC)"
@@ -44,7 +45,7 @@ class CAR(Platforms):
     ChryslerCarSpecs(mass=2242., wheelbase=3.089, steerRatio=16.2),
   )
   CHRYSLER_PACIFICA_2019_HYBRID = ChryslerPlatformConfig(
-    [ChryslerCarDocs("Chrysler Pacifica Hybrid 2019-24")],
+    [ChryslerCarDocs("Chrysler Pacifica Hybrid 2019-25")],
     CHRYSLER_PACIFICA_2018_HYBRID.specs,
   )
   CHRYSLER_PACIFICA_2018 = ChryslerPlatformConfig(
@@ -103,7 +104,7 @@ class CarControllerParams:
     elif CP.carFingerprint in RAM_DT:
       self.STEER_DELTA_UP = 6
       self.STEER_DELTA_DOWN = 6
-      self.STEER_MAX = 261  # EPS allows more, up to 350?
+      self.STEER_MAX = 350  # EPS allows more, up to 350?
     else:
       self.STEER_DELTA_UP = 3
       self.STEER_DELTA_DOWN = 3
